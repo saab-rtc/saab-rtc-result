@@ -1,0 +1,248 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAAB RTC Hyderabad - CNIC Result System</title>
+    <style>
+        /* === MAIN STYLES === */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .header {
+            background-color: #006633;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 4px solid #d4af37;
+        }
+        .logo {
+            height: 80px;
+            margin-bottom: 10px;
+        }
+        .institute-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .center-name {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .search-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        #searchInput {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        #searchButton {
+            padding: 12px 25px;
+            background-color: #006633;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        #searchButton:hover {
+            background-color: #004d26;
+        }
+        .search-note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        #resultContainer {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 200px;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .result-table th {
+            background-color: #006633;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .result-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        .result-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .no-result {
+            text-align: center;
+            color: #d9534f;
+            font-size: 18px;
+            padding: 40px 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: #006633;
+            color: white;
+            font-size: 14px;
+        }
+        .developer-credit {
+            margin-top: 10px;
+            font-style: italic;
+        }
+        @media (max-width: 600px) {
+            #searchInput { width: 90%; }
+            .header { padding: 15px 0; }
+            .institute-name { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img class="logo" src="C:\Users\mohsi\OneDrive\Desktop\Online Result System\rtc-logo.png.jpeg" alt="SAAB RTC Logo">
+        <div class="institute-name">SHAHEED ABDUL AZIZ BULLO</div>
+        <div class="center-name">RECRUIT TRAINING CENTER, HYDERABAD</div>
+        <div>Final Result of LSC Batch 01/2025</div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Enter CNIC (e.g., 4220112345671 or 42201-1234567-1)">
+        <button id="searchButton" onclick="searchResult()">Search Result</button>
+        <div class="search-note">Enter 13-digit CNIC with or without dashes</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="resultContainer">
+        <div style="text-align: center; padding: 40px 0;">
+            <p>Enter CNIC number to check result</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="developer-credit">
+            System Developed by: <strong>Mohsin Ali Jamali</strong> (Exam Branch SAAB, RTC Hyderabad)
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSpxIiO_3HjHPwBUZ3EHou1XfVBJLWB0GAWFbxvCWD6Vm0aXB8Ky8CGoMUYj5Po4gpUWsJOUPUWVO34/pub?gid=1524641333&single=true&output=csv';
+        const proxyUrl = 'https://corsproxy.io/?';
+        let allResults = [];
+
+        async function loadData() {
+            try {
+                const response = await fetch(`${proxyUrl}${encodeURIComponent(sheetUrl)}`);
+                const data = await response.text(); // CSV data
+                allResults = parseCSV(data);
+            } catch (error) {
+                console.error("Error loading data:", error);
+                document.getElementById('resultContainer').innerHTML = `
+                    <div class="no-result">
+                        <p>System temporarily unavailable</p>
+                        <p>Please try again later or contact support</p>
+                    </div>
+                `;
+            }
+        }
+
+        window.onload = loadData;
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return [];
+            const headers = lines[0].split(',').map(h => h.trim());
+            const results = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = values[j] ? values[j].trim() : '';
+                }
+                results.push(obj);
+            }
+            return results;
+        }
+
+        function searchResult() {
+            const resultDiv = document.getElementById('resultContainer');
+            let cnic = document.getElementById('searchInput').value.trim();
+            cnic = cnic.replace(/-/g, '').replace(/\s/g, '');
+
+            if (!cnic || cnic.length !== 13 || !/^\d+$/.test(cnic)) {
+                resultDiv.innerHTML = `
+                    <div class="no-result">
+                        <p>Please enter valid 13-digit CNIC</p>
+                        <p>Example: 4220112345671 or 42201-1234567-1</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const formattedCNIC = cnic.replace(/(\d{5})(\d{7})(\d{1})/, "$1-$2-$3");
+
+            const found = allResults.find(student => {
+                const studentCNIC = student['CNIC'] || student['Cnic'] || student['cnic'] || 
+                                    student['CNIC No'] || student['CNIC Number'] || student['CNIC No.'];
+                return studentCNIC && studentCNIC.replace(/-/g, '').replace(/\s/g, '') === cnic;
+            });
+
+            if (found) {
+                let html = `
+                    <h2 style="color: #006633;">Result for CNIC: ${formattedCNIC}</h2>
+                    <table class="result-table">
+                        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+                        <tbody>
+                `;
+                for (const [key, value] of Object.entries(found)) {
+                    if (value && value.trim() !== '') {
+                        html += `<tr><td><strong>${key}</strong></td><td>${value}</td></tr>`;
+                    }
+                }
+                html += `</tbody></table>`;
+                resultDiv.innerHTML = html;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="no-result">
+                        <p>No result found for CNIC: ${formattedCNIC}</p>
+                        <p>Please verify the CNIC and try again</p>
+                        ${allResults.length > 0 ? `<p>Available CNICs: ${allResults.slice(0, 3).map(s => s.CNIC || s.Cnic || 'N/A').join(', ')}...</p>` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchResult();
+            }
+        });
+    </script>
+</body>
+</html>
