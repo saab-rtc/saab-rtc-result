@@ -2,205 +2,199 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SAAB RTC - Online Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAAB RTC - CNIC Result</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      color: #333;
+      font-family: 'Arial', sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
     }
     .container {
       max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
+      margin: auto;
       background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      border: 2px solid #000080;
+      position: relative;
     }
     .header {
       text-align: center;
-      border-bottom: 3px solid #006633;
+      border-bottom: 2px solid #000080;
       padding-bottom: 10px;
     }
-    .header img {
-      height: 80px;
-    }
     .header h2 {
-      margin: 10px 0 5px;
-      color: #006633;
-    }
-    .header h4 {
       margin: 0;
-      color: #333;
+      font-size: 24px;
+      text-transform: uppercase;
     }
-    .search-box {
-      text-align: center;
-      margin: 30px 0 10px;
+    .header h3 {
+      margin: 0;
+      font-size: 18px;
+      color: red;
     }
-    .search-box input {
-      padding: 10px;
-      font-size: 16px;
-      width: 280px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    .photo {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      border: 2px solid #000;
     }
-    .search-box button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #006633;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-    .result-card {
+    .info {
       margin-top: 20px;
-      border: 2px solid #006633;
-      padding: 20px;
-      border-radius: 8px;
+      line-height: 1.6;
+      font-size: 16px;
     }
-    .result-table {
+    .info strong {
+      width: 160px;
+      display: inline-block;
+    }
+    table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
+      margin-top: 20px;
+      font-size: 15px;
     }
-    .result-table th, .result-table td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: center;
     }
-    .result-table th {
-      background-color: #006633;
-      color: white;
+    th {
+      background-color: #dbe5f1;
     }
-    #photo {
-      float: right;
-      width: 120px;
-      height: 140px;
-      border: 1px solid #ccc;
-      object-fit: cover;
+    .footer {
+      margin-top: 20px;
+      font-size: 16px;
     }
     .print-btn {
       margin-top: 20px;
-      text-align: right;
+      text-align: center;
     }
     .print-btn button {
-      padding: 8px 16px;
-      background-color: #006633;
+      background-color: #004d26;
       color: white;
+      padding: 10px 20px;
+      font-size: 16px;
       border: none;
-      border-radius: 4px;
       cursor: pointer;
     }
     .developer-credit {
-      text-align: center;
-      font-size: 13px;
-      margin-top: 50px;
-      color: #444;
-      border-top: 1px dashed #ccc;
-      padding-top: 10px;
+      margin-top: 40px;
       font-style: italic;
-    }
-    @media print {
-      .search-box, .print-btn, .developer-credit {
-        display: none;
-      }
-      body {
-        background: white;
-      }
-      .container {
-        box-shadow: none;
-        border: none;
-      }
+      text-align: center;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="https://i.imgur.com/NTa2enJ.png" alt="RTC Logo" />
-      <h2>SHAHEED ABDUL AZIZ BULLO RTC HYDERABAD</h2>
-      <h4>Final Result - LSC Batch 01/2025</h4>
-    </div>
-
-    <div class="search-box">
-      <input type="text" id="cnicInput" placeholder="Enter CNIC e.g. 42201-1234567-1" />
-      <button onclick="searchResult()">Search</button>
-    </div>
-
-    <div id="resultContainer"></div>
-
-    <div class="developer-credit">
-      This digital result system is developed & maintained by<br />
-      <strong>Mohsin Ali Jamali</strong><br />
-      Exam Branch, Shaheed Abdul Aziz Bullo RTC Hyderabad<br />
-      📞 0306-0384231
-    </div>
+  <div class="search-box" style="text-align:center; margin-bottom: 30px;">
+    <h2>SAAB RTC HYDERABAD - CNIC RESULT SYSTEM</h2>
+    <input type="text" id="searchInput" placeholder="Enter CNIC e.g. 42201-1234567-1" style="padding: 10px; width: 300px; font-size: 16px;">
+    <button onclick="searchResult()" style="padding: 10px 20px; font-size: 16px; background: green; color: white; border: none;">Search</button>
   </div>
+  
+  <div id="resultContainer"></div>
 
   <script>
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQKo_S-uDlS4XwjDPGgx9C_7BLTygGFCHT3Sid1nFq2CNmqRDwQxj7HhWwt9t0L1eylPoVQV_7IZKo_/pub?output=csv';
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSpxIiO_3HjHPwBUZ3EHou1XfVBJLWB0GAWFbxvCWD6Vm0aXB8Ky8CGoMUYj5Po4gpUWsJOUPUWVO34/pub?gid=1524641333&single=true&output=csv';
     const proxy = 'https://corsproxy.io/?';
-    const photoBaseUrl = 'https://drive.google.com/uc?export=view&id=';
+    let allResults = [];
 
-    const photoMap = {
-      'LSC-1-25-101': '1JnXqgFjzehPqtqxTKOrOb0RIyAPQYPl2',
-      'LSC-1-25-102': '1hjZpAqBEs77bBlJm1uZElFy46kycJ2Ea',
-      'LSC-1-25-103': '1z97ebRfMS1T0ibzZQkC5wBP2UPW25ZCn'
-      // Add more roll no → image ID
-    };
-
-    let allData = [];
-
-    async function fetchData() {
+    async function loadData() {
       const res = await fetch(proxy + encodeURIComponent(sheetUrl));
-      const text = await res.text();
-      const lines = text.split('\n').filter(l => l.trim());
-      const headers = lines[0].split(',').map(h => h.trim());
-      allData = lines.slice(1).map(row => {
-        const values = row.split(',');
+      const data = await res.text();
+      allResults = parseCSV(data);
+    }
+
+    function parseCSV(csv) {
+      const lines = csv.split('\n');
+      const headers = lines[0].split(',');
+      const result = [];
+      for (let i = 1; i < lines.length; i++) {
         const obj = {};
-        headers.forEach((h, i) => obj[h] = values[i]?.trim() || '');
-        return obj;
-      });
+        const currentline = lines[i].split(',');
+        headers.forEach((h, j) => obj[h.trim()] = currentline[j]?.trim() || '');
+        result.push(obj);
+      }
+      return result;
     }
 
     function searchResult() {
-      const cnic = document.getElementById('cnicInput').value.replace(/[^\d]/g, '');
-      const resultDiv = document.getElementById('resultContainer');
+      const input = document.getElementById('searchInput').value.replace(/[-\s]/g, '');
+      const trainee = allResults.find(t => t['CNIC'].replace(/[-\s]/g, '') === input);
+      const container = document.getElementById('resultContainer');
 
-      const record = allData.find(s => (s.CNIC || '').replace(/[^\d]/g, '') === cnic);
-
-      if (!record) {
-        resultDiv.innerHTML = `<p style="color:red;text-align:center;font-weight:bold;">No result found for CNIC: ${cnic}</p>`;
+      if (!trainee) {
+        container.innerHTML = `<p style='color:red; text-align:center;'>No result found for this CNIC.</p>`;
         return;
       }
 
-      const photoID = photoMap[record['Roll No']] || '';
-      const photo = photoID ? `<img id="photo" src="${photoBaseUrl + photoID}" alt="Photo">` : '';
-
-      let html = `<div class="result-card">${photo}
-        <h3>Result for ${record.Name}</h3>
-        <table class="result-table">`;
-
-      for (const [k, v] of Object.entries(record)) {
-        if (v && v.trim()) {
-          html += `<tr><th>${k}</th><td>${v}</td></tr>`;
-        }
-      }
-
-      html += `</table>
-        <div class="print-btn"><button onclick="window.print()">Print / PDF</button></div>
-      </div>`;
-
-      resultDiv.innerHTML = html;
+      const html = `
+        <div class="container" id="marksheet">
+          <div class="header">
+            <h2>SHAHEED ABDUL AZIZ BULLO<br>RECRUIT TRAINING CENTER HYDERABAD</h2>
+            <h3>MARKS CERTIFICATE</h3>
+            <p>Result of Final Examination of Lower School Course Batch (LSC/01/2025)<br>Held from 16.06.2025 to 25.06.2025</p>
+          </div>
+          <img class="photo" src="${trainee.PhotoURL}" alt="Trainee Photo" width="100" height="120">
+          <div class="info">
+            <p><strong>ROLL / SEAT NO:</strong> ${trainee.SeatNo}</p>
+            <p><strong>RANK & B.NO:</strong> ${trainee.Rank}</p>
+            <p><strong>NAME:</strong> ${trainee.Name}</p>
+            <p><strong>FATHER'S NAME:</strong> ${trainee.FatherName}</p>
+            <p><strong>CNIC NO:</strong> ${trainee.CNIC}</p>
+            <p><strong>ARRIVAL DIST./UNIT:</strong> ${trainee.Unit}</p>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Subject</th><th>Max Marks</th><th>Obtained</th><th>Remarks</th></tr>
+            </thead>
+            <tbody>
+              ${createRows(trainee)}
+            </tbody>
+          </table>
+          <div class="footer">
+            <p><strong>Total:</strong> 1500 &nbsp;&nbsp;&nbsp; <strong>Obtained:</strong> ${trainee.Total}</p>
+            <p><strong>Percentage:</strong> ${trainee.Percentage} &nbsp;&nbsp;&nbsp; <strong>Grade:</strong> ${trainee.Grade}</p>
+            <p><strong>Result:</strong> ${trainee.Result}</p>
+          </div>
+          <div class="developer-credit">System Developed by: Mohsin Ali Jamali (Exam Branch – RTC Hyderabad)</div>
+        </div>
+        <div class="print-btn">
+          <button onclick="printDiv()">Print / Download PDF</button>
+        </div>
+      `;
+      container.innerHTML = html;
     }
 
-    fetchData();
+    function createRows(t) {
+      const subjects = [
+        'Legal Knowledge','CrPC & Police Rules','PPW & Forensic Sci','General Knowledge','Investigation',
+        'Operation','Security','Intelligence','Module 01 to 20','English Language & Professional Skills',
+        'Prade & Drill','Physical & Fitness','Musketry & Firing','Discipline','Viva Voce'
+      ];
+      return subjects.map(sub => `
+        <tr>
+          <td>${sub}</td>
+          <td>${sub === 'Module 01 to 20' ? 200 : sub === 'Discipline' || sub === 'Viva Voce' ? 50 : 100}</td>
+          <td>${t[sub]}</td>
+          <td>${(parseInt(t[sub]) >= (sub === 'Module 01 to 20' ? 80 : sub === 'Discipline' || sub === 'Viva Voce' ? 20 : 40)) ? 'PASS' : 'FAIL'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function printDiv() {
+      const printContents = document.getElementById('marksheet').innerHTML;
+      const newWin = window.open('', '', 'height=800,width=800');
+      newWin.document.write('<html><head><title>Print Result</title>');
+      newWin.document.write('</head><body >');
+      newWin.document.write(printContents);
+      newWin.document.write('</body></html>');
+      newWin.document.close();
+      newWin.print();
+    }
+
+    window.onload = loadData;
   </script>
 </body>
 </html>
