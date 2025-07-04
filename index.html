@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SAAB RTC - Online Result</title>
   <style>
     body {
@@ -122,23 +122,23 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="https://i.imgur.com/NTa2enJ.png" alt="RTC Logo">
+      <img src="https://i.imgur.com/NTa2enJ.png" alt="RTC Logo" />
       <h2>SHAHEED ABDUL AZIZ BULLO RTC HYDERABAD</h2>
       <h4>Final Result - LSC Batch 01/2025</h4>
     </div>
 
     <div class="search-box">
-      <input type="text" id="cnicInput" placeholder="Enter CNIC e.g. 42201-1234567-1">
+      <input type="text" id="cnicInput" placeholder="Enter CNIC e.g. 42201-1234567-1" />
       <button onclick="searchResult()">Search</button>
     </div>
 
     <div id="resultContainer"></div>
 
     <div class="developer-credit">
-      This digital result system is developed & maintained by<br>
-      <strong>Mohsin Ali Jamali</strong><br>
-      Exam Branch, Shaheed Abdul Aziz Bullo RTC Hyderabad<br>
-      <span style="color: #006633;">📞 0306-0384231</span>
+      This digital result system is developed & maintained by<br />
+      <strong>Mohsin Ali Jamali</strong><br />
+      Exam Branch, Shaheed Abdul Aziz Bullo RTC Hyderabad<br />
+      📞 0306-0384231
     </div>
   </div>
 
@@ -151,57 +151,53 @@
       'LSC-1-25-101': '1JnXqgFjzehPqtqxTKOrOb0RIyAPQYPl2',
       'LSC-1-25-102': '1hjZpAqBEs77bBlJm1uZElFy46kycJ2Ea',
       'LSC-1-25-103': '1z97ebRfMS1T0ibzZQkC5wBP2UPW25ZCn'
+      // Add more roll no → image ID
     };
 
     let allData = [];
 
     async function fetchData() {
-      try {
-        const response = await fetch(proxy + encodeURIComponent(sheetUrl));
-        const text = await response.text();
-        const lines = text.split('\n').filter(l => l.trim() !== '');
-        const headers = lines[0].split(',');
-        allData = lines.slice(1).map(row => {
-          const values = row.split(',');
-          const obj = {};
-          headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
-          return obj;
-        });
-      } catch (err) {
-        document.getElementById('resultContainer').innerHTML = `<p style='text-align:center;color:red;font-weight:bold;'>Failed to load result data. Please check your internet or try again later.</p>`;
-        console.error('Failed to fetch data', err);
-      }
+      const res = await fetch(proxy + encodeURIComponent(sheetUrl));
+      const text = await res.text();
+      const lines = text.split('\n').filter(l => l.trim());
+      const headers = lines[0].split(',').map(h => h.trim());
+      allData = lines.slice(1).map(row => {
+        const values = row.split(',');
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = values[i]?.trim() || '');
+        return obj;
+      });
     }
 
     function searchResult() {
-      const input = document.getElementById('cnicInput').value.replace(/[^\d]/g, '');
-      const container = document.getElementById('resultContainer');
+      const cnic = document.getElementById('cnicInput').value.replace(/[^\d]/g, '');
+      const resultDiv = document.getElementById('resultContainer');
 
-      const student = allData.find(d => (d.CNIC || '').replace(/[^\d]/g, '') === input);
+      const record = allData.find(s => (s.CNIC || '').replace(/[^\d]/g, '') === cnic);
 
-      if (!student) {
-        container.innerHTML = `<p style='text-align:center;color:red;font-weight:bold;'>No result found for CNIC: ${input}</p>`;
+      if (!record) {
+        resultDiv.innerHTML = `<p style="color:red;text-align:center;font-weight:bold;">No result found for CNIC: ${cnic}</p>`;
         return;
       }
 
-      const photoID = photoMap[student['Roll No']] || '';
-      const photoTag = photoID ? `<img id="photo" src="${photoBaseUrl + photoID}" alt="Photo">` : '';
+      const photoID = photoMap[record['Roll No']] || '';
+      const photo = photoID ? `<img id="photo" src="${photoBaseUrl + photoID}" alt="Photo">` : '';
 
-      let html = `<div class='result-card'>${photoTag}
-          <h3>Result for ${student.Name}</h3>
-          <table class='result-table'>`;
+      let html = `<div class="result-card">${photo}
+        <h3>Result for ${record.Name}</h3>
+        <table class="result-table">`;
 
-      for (const [key, val] of Object.entries(student)) {
-        if (val.trim() !== '') {
-          html += `<tr><th>${key}</th><td>${val}</td></tr>`;
+      for (const [k, v] of Object.entries(record)) {
+        if (v && v.trim()) {
+          html += `<tr><th>${k}</th><td>${v}</td></tr>`;
         }
       }
 
       html += `</table>
-          <div class='print-btn'><button onclick="window.print()">Print / PDF</button></div>
+        <div class="print-btn"><button onclick="window.print()">Print / PDF</button></div>
       </div>`;
 
-      container.innerHTML = html;
+      resultDiv.innerHTML = html;
     }
 
     fetchData();
