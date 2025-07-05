@@ -1,267 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sindh Police - Trainee Result Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LSC Batch 01/2025 Final Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
-      --primary: #0a3d62;
-      --secondary: #1e88e5;
-      --danger: #d63031;
-      --accent: #f39c12;
-      --light: #f5f7fa;
+      --primary: #1a237e;
+      --secondary: #3949ab;
+      --accent: #f9a825;
+      --light: #f4f6f9;
+      --dark: #212121;
       --white: #fff;
+      --success: #388e3c;
+      --danger: #c62828;
     }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--light);
-      color: #333;
-      margin: 0;
-      padding: 0;
+      color: var(--dark);
+      padding: 20px;
     }
+
     .container {
-      max-width: 960px;
-      margin: 30px auto;
+      max-width: 900px;
+      margin: auto;
       background: var(--white);
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      border-top: 6px solid var(--primary);
-      overflow: hidden;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 10px;
     }
+
     .header {
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      padding: 30px 20px;
       text-align: center;
-      color: var(--white);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
     }
-    .logo {
+
+    .header img {
       height: 70px;
     }
-    .institute-name {
-      font-size: 1.8rem;
+
+    .header h1 {
+      font-size: 1.6rem;
       font-weight: 700;
       margin-top: 10px;
     }
-    .subtitle {
+
+    .header h2 {
       font-size: 1rem;
-      opacity: 0.9;
+      font-weight: 400;
+      color: #555;
     }
-    .search-container {
-      padding: 30px 20px;
-      background: #f9fbfd;
-      border-bottom: 1px solid #e1e7ec;
-    }
-    .input-group label {
-      font-weight: 600;
+
+    .header h3 {
+      margin-top: 10px;
       color: var(--primary);
-      margin-bottom: 8px;
-      display: block;
     }
-    .input-group input {
+
+    .input-group {
+      margin: 20px 0;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
       width: 100%;
       padding: 12px;
-      border: 2px solid #ccc;
       border-radius: 6px;
-      font-size: 1rem;
+      border: 1px solid #ccc;
     }
+
     .button-group {
       display: flex;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 15px;
     }
-    .btn {
-      padding: 12px;
-      font-weight: 600;
-      font-size: 1rem;
+
+    button {
+      padding: 10px 20px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      flex: 1;
+      font-weight: bold;
     }
+
     .btn-primary {
       background: var(--primary);
       color: var(--white);
     }
+
     .btn-secondary {
       background: var(--white);
-      color: var(--primary);
       border: 2px solid var(--primary);
+      color: var(--primary);
     }
+
     .result-container {
-      padding: 30px 20px;
       display: none;
+      margin-top: 30px;
     }
-    .result-header {
-      background: var(--primary);
-      color: var(--white);
-      padding: 16px;
-      display: flex;
-      justify-content: space-between;
+
+    .info-box {
+      margin-bottom: 20px;
     }
-    .result-body {
-      padding: 20px;
-      border: 1px solid #e1e7ec;
-      border-top: none;
-      background: #fff;
-    }
-    .trainee-info p {
+
+    .info-box p {
       margin-bottom: 6px;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-bottom: 20px;
     }
-    table th, table td {
-      padding: 12px;
+
+    table, th, td {
       border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
       text-align: left;
     }
-    table th {
-      background-color: #f0f2f5;
+
+    th {
+      background: var(--light);
+      color: var(--dark);
     }
-    .action-buttons {
-      margin-top: 20px;
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
+
+    .pass { color: var(--success); font-weight: bold; }
+    .fail { color: var(--danger); font-weight: bold; }
+
     .footer {
       text-align: center;
-      padding: 20px;
-      background: #f1f3f6;
+      margin-top: 40px;
       font-size: 0.9rem;
-      color: #555;
+      color: #666;
     }
-    .developer-info {
-      font-style: italic;
-      margin-top: 5px;
-      color: var(--primary);
-    }
-    .loading, .error-message {
-      text-align: center;
-      padding: 40px;
-    }
-    .loading i, .error-message i {
-      font-size: 2rem;
-      display: block;
-      margin-bottom: 10px;
+
+    @media print {
+      body * { visibility: hidden; }
+      .result-container, .result-container * { visibility: visible; }
+      .result-container { position: absolute; top: 0; left: 0; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <img src="rtc-logo.jpeg.jpeg" alt="Logo" class="logo" />
-      <div class="institute-name">SHAHEED ABDUL AZIZ BULLO</div>
-      <div class="subtitle">RECRUIT TRAINING CENTER HYDERABAD</div>
+      <img src="rtc-logo.jpeg" alt="Logo">
+      <h1>SHAHEED ABDUL AZIZ BULLO</h1>
+      <h2>RECRUIT TRAINING CENTER HYDERABAD</h2>
+      <h3>Final Result of LSC Batch 01/2025</h3>
     </div>
-    <div class="search-container">
-      <div class="input-group">
-        <label for="cnic">Enter CNIC Number</label>
-        <input type="text" id="cnic" placeholder="e.g. 42201-1234567-9 or 4220112345679" />
-      </div>
-      <div class="button-group">
-        <button class="btn btn-primary" onclick="checkResult()"><i class="fas fa-search"></i> Check Result</button>
-        <button class="btn btn-secondary" onclick="clearForm()"><i class="fas fa-redo"></i> Clear</button>
-      </div>
+
+    <div class="input-group">
+      <label for="cnic">Enter CNIC Number</label>
+      <input type="text" id="cnic" placeholder="e.g. 4220112345679 or 42201-1234567-9">
     </div>
+
+    <div class="button-group">
+      <button class="btn-primary" onclick="checkResult()"><i class="fas fa-search"></i> Check Result</button>
+      <button class="btn-secondary" onclick="clearForm()"><i class="fas fa-redo"></i> Clear</button>
+    </div>
+
     <div class="result-container" id="resultContainer"></div>
+
     <div class="footer">
       <p>© <span id="currentYear"></span> Sindh Police Department. All rights reserved.</p>
-      <p class="developer-info">System by Exam Branch - Mohsin Ali Jamali - 0306-0384231</p>
+      <p>System Developed by <strong>Mohsin Ali Jamali</strong> - Exam Branch</p>
     </div>
   </div>
+
   <script>
-    const API_URL = "https://sheetdb.io/api/v1/sh871nkwz39y0";
     document.getElementById("currentYear").textContent = new Date().getFullYear();
+    const API_URL = "https://sheetdb.io/api/v1/sh871nkwz39y0";
 
     function normalizeCNIC(cnic) {
-      return cnic.replace(/\D/g, '');
+      return cnic.replace(/\D/g, "");
     }
 
     function formatCNIC(cnic) {
       const cleaned = normalizeCNIC(cnic);
-      return cleaned.length === 13 ? `${cleaned.slice(0,5)}-${cleaned.slice(5,12)}-${cleaned.slice(12)}` : cnic;
+      return `${cleaned.slice(0,5)}-${cleaned.slice(5,12)}-${cleaned.slice(12)}`;
     }
 
     async function checkResult() {
       const cnic = document.getElementById("cnic").value.trim();
-      const resultDiv = document.getElementById("resultContainer");
-      resultDiv.style.display = "block";
+      const normalized = normalizeCNIC(cnic);
+      const resultBox = document.getElementById("resultContainer");
 
-      if (normalizeCNIC(cnic).length !== 13) {
-        resultDiv.innerHTML = `<div class="error-message"><i class="fas fa-times-circle"></i> Please enter a valid 13-digit CNIC.</div>`;
+      if (normalized.length !== 13) {
+        resultBox.innerHTML = `<p style='color:red;'>Please enter a valid 13-digit CNIC.</p>`;
+        resultBox.style.display = "block";
         return;
       }
 
-      resultDiv.innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading result...</div>`;
+      resultBox.innerHTML = `<p>Loading...</p>`;
+      resultBox.style.display = "block";
 
       try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
+        const res = await fetch(API_URL);
+        const data = await res.json();
 
-        const trainee = data.find(item => normalizeCNIC(item["CNIC"] || item["CNIC:"]) === normalizeCNIC(cnic));
-        if (!trainee) {
-          resultDiv.innerHTML = `<div class="error-message"><i class="fas fa-info-circle"></i> No record found for CNIC: ${formatCNIC(cnic)}</div>`;
+        const trainee = data.filter(row => normalizeCNIC(row.CNIC || row["CNIC:"]) === normalized);
+        if (!trainee.length) {
+          resultBox.innerHTML = `<p style='color:red;'>No result found for CNIC: ${formatCNIC(cnic)}</p>`;
           return;
         }
 
-        const subjectFields = [
-          "Legal Knowledge", "CrPC & Police Rules", "PPW & Forensic Sci", "General Knowledge",
-          "Investigation", "Operation", "Security", "Intelligence", "Module 01 to 20",
-          "English Language & Professional Skills", "Prade & Drill", "Physical & Fitness",
-          "Musketry & Firing", "Discipline", "Viva Voce"
-        ];
-
+        const info = trainee[0];
+        const exclude = ["CNIC", "CNIC:", "Total", "Percentage", "GRADE", "Result"];
         let html = `
-          <div class="result-header">
-            <h3>Result Details</h3>
-            <span>${new Date().toLocaleDateString()}</span>
+          <div class="info-box">
+            <p><strong>Name:</strong> ${info["NAME"]}</p>
+            <p><strong>Father's Name:</strong> ${info["FATHER'S NAME"]}</p>
+            <p><strong>CNIC:</strong> ${formatCNIC(cnic)}</p>
+            <p><strong>Roll No:</strong> ${info["ROLL / SEAT NO"]}</p>
+            <p><strong>Rank & B.No:</strong> ${info["RANK & B.No"]}</p>
+            <p><strong>Arrival District / Unit:</strong> ${info["ARRIVAL DIST. /UNIT"]}</p>
           </div>
-          <div class="result-body">
-            <div class="trainee-info">
-              <p><strong>Name:</strong> ${trainee["NAME"]}</p>
-              <p><strong>CNIC:</strong> ${formatCNIC(cnic)}</p>
-              <p><strong>Course:</strong> ${trainee["RANK & B.No"] || "N/A"}</p>
-            </div>
-            <table>
-              <thead><tr><th>Subject</th><th>Marks</th></tr></thead>
-              <tbody>`;
+          <table>
+            <thead><tr><th>Subject</th><th>Marks</th></tr></thead>
+            <tbody>
+        `;
 
-        subjectFields.forEach(subject => {
-          if (trainee[subject]) {
-            html += `<tr><td>${subject}</td><td>${trainee[subject]}</td></tr>`;
+        for (const [key, value] of Object.entries(info)) {
+          if (!exclude.includes(key) && !key.includes("NAME") && !key.includes("CNIC") && !key.includes("ROLL") && !key.includes("RANK") && !key.includes("ARRIVAL")) {
+            html += `<tr><td>${key}</td><td>${value}</td></tr>`;
           }
-        });
+        }
 
         html += `</tbody>
-              <tfoot>
-                <tr><th>Total Marks</th><td>${trainee["Total"] || "N/A"}</td></tr>
-                <tr><th>Percentage</th><td>${trainee["Percentage"] || "N/A"}%</td></tr>
-                <tr><th>Grade</th><td>${trainee["GRADE"] || "N/A"}</td></tr>
-                <tr><th>Result</th><td>${trainee["Result"] || "N/A"}</td></tr>
-              </tfoot>
-            </table>
-            <div class="action-buttons">
-              <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
-              <button class="btn btn-secondary" onclick="alert('PDF feature coming soon')"><i class="fas fa-file-pdf"></i> PDF</button>
-            </div>
-          </div>`;
+          <tfoot>
+            <tr><th>Total</th><td>${info["Total"]}</td></tr>
+            <tr><th>Percentage</th><td>${info["Percentage"]}%</td></tr>
+            <tr><th>Grade</th><td>${info["GRADE"]}</td></tr>
+            <tr><th>Result</th><td class="${info["Result"] === 'Pass' ? 'pass' : 'fail'}">${info["Result"]}</td></tr>
+          </tfoot>
+          </table>
 
-        resultDiv.innerHTML = html;
-      } catch (error) {
-        console.error(error);
-        resultDiv.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Error loading result. Please try again.</div>`;
+          <div class="button-group">
+            <button class="btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+            <button class="btn-secondary" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+          </div>
+        `;
+
+        resultBox.innerHTML = html;
+
+      } catch (err) {
+        resultBox.innerHTML = `<p style='color:red;'>Error fetching data. Please try again.</p>`;
       }
     }
 
     function clearForm() {
       document.getElementById("cnic").value = "";
       document.getElementById("resultContainer").style.display = "none";
+    }
+
+    async function downloadPDF() {
+      const result = document.getElementById("resultContainer");
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.html(result, {
+        callback: function (pdf) {
+          pdf.save("Trainee_Result.pdf");
+        },
+        x: 10,
+        y: 10,
+        width: 180
+      });
     }
   </script>
 </body>
