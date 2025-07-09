@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -12,62 +12,71 @@
 
   <style>
     :root {
-      --primary: #0a3d62;
-      --secondary: #1e88e5;
-      --bg: #f5f7fa;
+      --primary: #111827;
+      --secondary: #1e3a8a;
+      --bg: #0f172a;
+      --text: #e5e7eb;
+      --accent: #f59e0b;
       --white: #fff;
-      --accent: #f39c12;
       --font: 'Open Sans', sans-serif;
     }
-    * { box-sizing: border-box; margin:0; padding:0; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: var(--font);
       background: var(--bg);
-      color: #333;
+      color: var(--text);
       line-height: 1.5;
     }
+
     .container {
-      max-width: 960px;
+      max-width: 900px;
       margin: 30px auto;
-      background: var(--white);
+      background: #1e293b;
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+      padding-bottom: 20px;
     }
+
     .header {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       padding: 25px;
       text-align: center;
       color: white;
     }
+
     .header img {
       height: 80px;
       margin-bottom: 10px;
     }
+
     .header h1 {
-      margin: 8px 0;
       font-size: 1.8rem;
-      font-weight: 600;
+      font-weight: 700;
     }
+
     .header h2 {
-      margin: 4px 0;
       font-size: 1rem;
       font-weight: 400;
     }
+
     .subtitle {
       background: var(--accent);
       color: white;
       margin: 15px;
-      padding: 8px 0;
+      padding: 8px;
       text-align: center;
       font-size: 1rem;
       font-weight: 600;
       border-radius: 4px;
     }
+
     .search-container {
       padding: 20px;
       text-align: center;
     }
+
     .search-container input {
       width: 280px;
       padding: 10px;
@@ -75,6 +84,7 @@
       border: 2px solid var(--secondary);
       border-radius: 4px;
     }
+
     .search-container button {
       margin-left: 10px;
       padding: 10px 20px;
@@ -85,95 +95,119 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      transition: background 0.3s;
     }
+
     .search-container button:hover {
-      background: #082a48;
+      background: #0a0a0a;
     }
+
     .result-container {
-      padding: 30px;
+      padding: 20px;
       display: none;
     }
+
     .result-card {
-      border: 2px solid var(--primary);
-      border-radius: 6px;
-      padding: 20px;
       background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 6px;
     }
+
     .info-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
+
     .info-grid p {
       width: calc(50% - 6px);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    th, td {
+      padding: 6px 8px;
+      border: 1px solid #999;
+      text-align: left;
+    }
+
+    th {
+      background: #e5e7eb;
+    }
+
+    .action-buttons {
+      text-align: center;
       margin-top: 20px;
     }
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      font-size: 0.95rem;
-    }
-    th {
-      background: var(--bg);
-    }
-    .action-buttons {
-      margin-top: 25px;
-      text-align: center;
-    }
+
     .action-buttons button {
-      margin: 0 10px;
-      padding: 10px 20px;
+      margin: 8px;
+      padding: 10px 18px;
       font-size: 1rem;
-      font-weight: 600;
-      border: none;
       border-radius: 4px;
+      font-weight: 600;
       cursor: pointer;
+      border: none;
     }
+
     .btn-print {
       background: var(--primary);
       color: white;
     }
+
     .btn-pdf {
-      background: var(--white);
+      background: white;
       color: var(--primary);
       border: 2px solid var(--primary);
     }
+
     .footer {
-      background: #f1f3f6;
-      padding: 20px;
+      background: #0f172a;
+      padding: 15px;
       text-align: center;
       font-size: 0.85rem;
-      color: #555;
+      color: #9ca3af;
     }
+
     .footer .developer-credit {
+      color: var(--accent);
       font-weight: 600;
-      color: var(--secondary);
-      margin-top: 5px;
     }
+
     @media print {
-      .header, .subtitle { display: none !important; }
-      .footer::after {
-        content: "";
-        display: block;
-        margin-top: 20px;
-        text-align: center;
-        font-size: 0.9rem;
-        color: #444;
+      body {
+        background: white !important;
+        color: black !important;
+      }
+
+      .header, .subtitle, .search-container, .action-buttons, .footer {
+        display: none !important;
+      }
+
+      .result-card {
+        border: none;
+        padding: 0;
+        font-size: 10pt;
+      }
+
+      table {
+        font-size: 10pt;
       }
     }
+
     @media (max-width: 600px) {
       .info-grid p {
         width: 100%;
       }
       .search-container input {
-        width: 200px;
+        width: 100%;
+        margin-bottom: 10px;
       }
     }
   </style>
@@ -181,10 +215,11 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="rtc-logo.jpeg.jpeg" alt="Logo">
+      <img src="rtc-logo.jpeg.jpeg" alt="Logo" />
       <h1>SHAHEED ABDUL AZIZ BULLO</h1>
       <h2>RECRUIT TRAINING CENTER HYDERABAD</h2>
     </div>
+
     <div class="subtitle">Final Result of LSC Batch 01/2025</div>
 
     <div class="search-container">
@@ -195,25 +230,32 @@
     <div class="result-container" id="resultContainer"></div>
 
     <div class="footer">
-      <div class="developer-credit">System Developed by: Mohsin Ali Jamali (Exam Branch SAAB, RTC HYD)</div>
+      <div class="developer-credit">
+        System Developed by: Mohsin Ali Jamali (Exam Branch SAAB, RTC HYD)
+      </div>
     </div>
   </div>
 
   <script>
     const API = "https://sheetdb.io/api/v1/sh871nkwz39y0";
 
-    function normalizeCNIC(c) { return c.replace(/\D/g, ''); }
+    function normalizeCNIC(c) {
+      return c.replace(/\D/g, '');
+    }
+
     function formatCNIC(c) {
       const d = normalizeCNIC(c);
-      return d.length === 13 ? `${d.slice(0,5)}-${d.slice(5,12)}-${d.slice(12)}` : c;
+      return d.length === 13
+        ? `${d.slice(0, 5)}-${d.slice(5, 12)}-${d.slice(12)}`
+        : c;
     }
 
     async function checkResult() {
-      const cnic = document.getElementById('cnic').value.trim();
+      const cnic = document.getElementById("cnic").value.trim();
       const cleaned = normalizeCNIC(cnic);
-      const div = document.getElementById('resultContainer');
-      div.innerHTML = '';
-      div.style.display = 'block';
+      const div = document.getElementById("resultContainer");
+      div.innerHTML = "";
+      div.style.display = "block";
 
       if (cleaned.length !== 13) {
         div.innerHTML = `<p style="text-align:center;color:red;">Enter a valid 13-digit CNIC.</p>`;
@@ -224,18 +266,33 @@
       try {
         const res = await fetch(API);
         const data = await res.json();
-        const tr = data.find(r => normalizeCNIC(r["CNIC"] || r["CNIC:"]) === cleaned);
+        const tr = data.find(
+          (r) => normalizeCNIC(r["CNIC"] || r["CNIC:"]) === cleaned
+        );
 
         if (!tr) {
-          div.innerHTML = `<p style="text-align:center;color:red;">No record found for ${formatCNIC(cnic)}</p>`;
+          div.innerHTML = `<p style="text-align:center;color:red;">No record found for ${formatCNIC(
+            cnic
+          )}</p>`;
           return;
         }
 
         const subjects = [
-          "Legal Knowledge","CrPC & Police Rules","PPW & Forensic Sci","General Knowledge",
-          "Investigation","Operation","Security","Intelligence","Module 01 to 20",
-          "English Language & Professional Skills","Prade & Drill","Physical & Fitness",
-          "Musketry & Firing","Discipline","Viva Voce"
+          "Legal Knowledge",
+          "CrPC & Police Rules",
+          "PPW & Forensic Sci",
+          "General Knowledge",
+          "Investigation",
+          "Operation",
+          "Security",
+          "Intelligence",
+          "Module 01 to 20",
+          "English Language & Professional Skills",
+          "Prade & Drill",
+          "Physical & Fitness",
+          "Musketry & Firing",
+          "Discipline",
+          "Viva Voce"
         ];
 
         let out = `<div id="resultCard" class="result-card">
@@ -250,27 +307,26 @@
 
           <table><thead><tr><th>Subject</th><th>Marks</th></tr></thead><tbody>`;
 
-        subjects.forEach(subject => {
+        subjects.forEach((subject) => {
           if (tr[subject]) {
             out += `<tr><td>${subject}</td><td>${tr[subject]}</td></tr>`;
           }
         });
 
         out += `</tbody><tfoot>
-          <tr><th>Total</th><td>${tr.Total}</td></tr>
-          <tr><th>Percentage</th><td>${tr.Percentage}%</td></tr>
-          <tr><th>Grade</th><td>${tr.GRADE}</td></tr>
-          <tr><th>Result</th><td>${tr.Result}</td></tr>
-        </tfoot></table>
+            <tr><th>Total</th><td>${tr.Total}</td></tr>
+            <tr><th>Percentage</th><td>${tr.Percentage}%</td></tr>
+            <tr><th>Grade</th><td>${tr.GRADE}</td></tr>
+            <tr><th>Result</th><td>${tr.Result}</td></tr>
+          </tfoot></table>
         </div>
 
         <div class="action-buttons">
-          <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Result</button>
-          <button class="btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+          <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+          <button class="btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
         </div>`;
 
         div.innerHTML = out;
-
       } catch (err) {
         console.error("Error fetching result:", err);
         div.innerHTML = `<p style="text-align:center;color:red;">Error loading results, try again.</p>`;
@@ -278,16 +334,16 @@
     }
 
     function downloadPDF() {
-      const el = document.getElementById('resultCard');
+      const el = document.getElementById("resultCard");
       if (!el) {
         alert("Result not loaded.");
         return;
       }
       html2pdf().from(el).set({
-        margin: 0.5,
-        filename: 'Trainee_Result.pdf',
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        margin: 0.2,
+        filename: "Trainee_Result.pdf",
+        html2canvas: { scale: 1.8, backgroundColor: '#fff' },
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
       }).save();
     }
   </script>
