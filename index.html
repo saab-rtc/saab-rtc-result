@@ -2,74 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LSC Batch 01/2025 – SAAB, RTC Hyderabad Result Portal</title>
 
   <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     :root {
-      --primary: #111827;
-      --secondary: #1e3a8a;
+      --primary: #1e40af;
+      --secondary: #1e293b;
       --bg: #0f172a;
-      --text: #e5e7eb;
+      --text: #f3f4f6;
       --accent: #f59e0b;
-      --white: #fff;
-      --font: 'Open Sans', sans-serif;
+      --white: #ffffff;
+      --error: #ef4444;
+      --font: 'Inter', sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
     }
 
     .container {
-      max-width: 900px;
-      margin: 30px auto;
-      background: #1e293b;
-      border-radius: 8px;
+      max-width: 960px;
+      width: 100%;
+      margin: 20px auto;
+      background: var(--secondary);
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       padding-bottom: 20px;
     }
 
     .header {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      padding: 25px;
+      padding: 30px;
       text-align: center;
-      color: white;
+      color: var(--white);
     }
 
     .header img {
-      height: 80px;
-      margin-bottom: 10px;
+      height: 90px;
+      margin-bottom: 12px;
+      object-fit: contain;
     }
 
     .header h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     .header h2 {
-      font-size: 1rem;
-      font-weight: 400;
+      font-size: 1.1rem;
+      font-weight: 500;
+      opacity: 0.9;
     }
 
     .subtitle {
       background: var(--accent);
-      color: white;
-      margin: 15px;
-      padding: 8px;
+      color: var(--white);
+      margin: 20px;
+      padding: 10px;
       text-align: center;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 600;
-      border-radius: 4px;
+      border-radius: 6px;
     }
 
     .search-container {
@@ -78,27 +93,36 @@
     }
 
     .search-container input {
-      width: 280px;
-      padding: 10px;
+      width: 100%;
+      max-width: 320px;
+      padding: 12px;
       font-size: 1rem;
-      border: 2px solid var(--secondary);
-      border-radius: 4px;
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      background: var(--white);
+      transition: border-color 0.3s;
+    }
+
+    .search-container input:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
     .search-container button {
-      margin-left: 10px;
-      padding: 10px 20px;
+      margin: 10px 0;
+      padding: 12px 24px;
       font-size: 1rem;
       font-weight: 600;
-      color: white;
+      color: var(--white);
       background: var(--primary);
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background 0.3s;
     }
 
     .search-container button:hover {
-      background: #0a0a0a;
+      background: #1e3a8a;
     }
 
     .result-container {
@@ -107,38 +131,47 @@
     }
 
     .result-card {
-      background: white;
-      color: black;
-      padding: 20px;
-      border-radius: 6px;
+      background: var(--white);
+      color: #111827;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .info-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
     }
 
     .info-grid p {
-      width: calc(50% - 6px);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      line-height: 1.4;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
     }
 
     th, td {
-      padding: 6px 8px;
-      border: 1px solid #999;
+      padding: 10px;
+      border: 1px solid #d1d5db;
       text-align: left;
     }
 
     th {
-      background: #e5e7eb;
+      background: #f3f4f6;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    tfoot tr {
+      background: #f9fafb;
+      font-weight: 600;
     }
 
     .action-buttons {
@@ -148,30 +181,50 @@
 
     .action-buttons button {
       margin: 8px;
-      padding: 10px 18px;
+      padding: 12px 24px;
       font-size: 1rem;
-      border-radius: 4px;
+      border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
       border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
     }
 
     .btn-print {
       background: var(--primary);
-      color: white;
+      color: var(--white);
+    }
+
+    .btn-print:hover {
+      background: #1e3a8a;
     }
 
     .btn-pdf {
-      background: white;
+      background: var(--white);
       color: var(--primary);
       border: 2px solid var(--primary);
     }
 
+    .btn-pdf:hover {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .error-message {
+      text-align: center;
+      color: var(--error);
+      font-weight: 500;
+      padding: 10px;
+    }
+
     .footer {
-      background: #0f172a;
+      background: var(--bg);
       padding: 15px;
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #9ca3af;
     }
 
@@ -182,17 +235,23 @@
 
     @media print {
       body {
-        background: white !important;
-        color: black !important;
+        background: var(--white) !important;
+        color: #000 !important;
+        padding: 0 !important;
       }
 
       .header, .subtitle, .search-container, .action-buttons, .footer {
         display: none !important;
       }
 
+      .result-container {
+        display: block !important;
+      }
+
       .result-card {
         border: none;
         padding: 0;
+        box-shadow: none;
         font-size: 10pt;
       }
 
@@ -201,13 +260,30 @@
       }
     }
 
-    @media (max-width: 600px) {
-      .info-grid p {
-        width: 100%;
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding-bottom: 10px;
       }
+
+      .header img {
+        height: 70px;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .header h2 {
+        font-size: 0.95rem;
+      }
+
       .search-container input {
+        max-width: 100%;
+      }
+
+      .search-container button {
         width: 100%;
-        margin-bottom: 10px;
       }
     }
   </style>
@@ -215,7 +291,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="SAAB_RTC_Logo-removebg-preview.png" alt="Logo" />
+      <img src="SAAB_RTC_Logo-removebg-preview.png" alt="SAAB RTC Logo" />
       <h1>SHAHEED ABDUL AZIZ BULLO</h1>
       <h2>RECRUIT TRAINING CENTER HYDERABAD</h2>
     </div>
@@ -223,8 +299,8 @@
     <div class="subtitle">Final Result of LSC Batch 01/2025</div>
 
     <div class="search-container">
-      <input type="text" id="cnic" placeholder="Enter CNIC (e.g. 4220112345679)" />
-      <button onclick="checkResult()">Check Result</button>
+      <input type="text" id="cnic" placeholder="Enter CNIC (e.g., 42201-1234567-9)" aria-label="Enter CNIC" />
+      <button onclick="checkResult()"><i class="fas fa-search"></i> Check Result</button>
     </div>
 
     <div class="result-container" id="resultContainer"></div>
@@ -239,41 +315,42 @@
   <script>
     const API = "https://sheetdb.io/api/v1/sh871nkwz39y0";
 
-    function normalizeCNIC(c) {
-      return c.replace(/\D/g, '');
+    function normalizeCNIC(cnic) {
+      return cnic.replace(/\D/g, '');
     }
 
-    function formatCNIC(c) {
-      const d = normalizeCNIC(c);
-      return d.length === 13
-        ? `${d.slice(0, 5)}-${d.slice(5, 12)}-${d.slice(12)}`
-        : c;
+    function formatCNIC(cnic) {
+      const cleaned = normalizeCNIC(cnic);
+      return cleaned.length === 13
+        ? `${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(12)}`
+        : cnic;
     }
 
     async function checkResult() {
-      const cnic = document.getElementById("cnic").value.trim();
+      const cnicInput = document.getElementById("cnic");
+      const cnic = cnicInput.value.trim();
       const cleaned = normalizeCNIC(cnic);
-      const div = document.getElementById("resultContainer");
-      div.innerHTML = "";
-      div.style.display = "block";
+      const resultContainer = document.getElementById("resultContainer");
+      resultContainer.innerHTML = "";
+      resultContainer.style.display = "block";
 
       if (cleaned.length !== 13) {
-        div.innerHTML = `<p style="text-align:center;color:red;">Enter a valid 13-digit CNIC.</p>`;
+        resultContainer.innerHTML = `<p class="error-message">Please enter a valid 13-digit CNIC.</p>`;
+        cnicInput.focus();
         return;
       }
 
-      div.innerHTML = `<p style="text-align:center;">Loading…</p>`;
+      resultContainer.innerHTML = `<p class="error-message">Loading results...</p>`;
       try {
-        const res = await fetch(API);
-        const data = await res.json();
-        const tr = data.find(
-          (r) => normalizeCNIC(r["CNIC"] || r["CNIC:"]) === cleaned
+        const response = await fetch(API, { headers: { 'Cache-Control': 'no-cache' } });
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        const trainee = data.find(
+          (record) => normalizeCNIC(record["CNIC"] || record["CNIC:"]) === cleaned
         );
 
-        if (!tr) {
-          div.innerHTML = `<p style="text-align:center;color:red;">No record found for ${formatCNIC(
-            cnic
-          )}</p>`;
+        if (!trainee) {
+          resultContainer.innerHTML = `<p class="error-message">No record found for CNIC: ${formatCNIC(cnic)}</p>`;
           return;
         }
 
@@ -295,57 +372,75 @@
           "Viva Voce"
         ];
 
-        let out = `<div id="resultCard" class="result-card">
+        let output = `<div id="resultCard" class="result-card">
           <div class="info-grid">
-            <p><strong>Roll No:</strong> ${tr["ROLL / SEAT NO"]}</p>
-            <p><strong>Rank & B.No:</strong> ${tr["RANK & B.No"]}</p>
-            <p><strong>Name:</strong> ${tr.NAME}</p>
-            <p><strong>Father's Name:</strong> ${tr["FATHER'S NAME"]}</p>
+            <p><strong>Roll No:</strong> ${trainee["ROLL / SEAT NO"]}</p>
+            <p><strong>Rank & B.No:</strong> ${trainee["RANK & B.No"]}</p>
+            <p><strong>Name:</strong> ${trainee.NAME}</p>
+            <p><strong>Father's Name:</strong> ${trainee["FATHER'S NAME"]}</p>
             <p><strong>CNIC:</strong> ${formatCNIC(cnic)}</p>
-            <p><strong>Arrival Dist/Unit:</strong> ${tr["ARRIVAL DIST. /UNIT"]}</p>
+            <p><strong>Arrival Dist/Unit:</strong> ${trainee["ARRIVAL DIST. /UNIT"]}</p>
           </div>
 
-          <table><thead><tr><th>Subject</th><th>Marks</th></tr></thead><tbody>`;
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Marks</th>
+              </tr>
+            </thead>
+            <tbody>`;
 
         subjects.forEach((subject) => {
-          if (tr[subject]) {
-            out += `<tr><td>${subject}</td><td>${tr[subject]}</td></tr>`;
+          if (trainee[subject]) {
+            output += `<tr><td>${subject}</td><td>${trainee[subject]}</td></tr>`;
           }
         });
 
-        out += `</tbody><tfoot>
-            <tr><th>Total</th><td>${tr.Total}</td></tr>
-            <tr><th>Percentage</th><td>${tr.Percentage}%</td></tr>
-            <tr><th>Grade</th><td>${tr.GRADE}</td></tr>
-            <tr><th>Result</th><td>${tr.Result}</td></tr>
-          </tfoot></table>
-        </div>
+        output += `</tbody>
+          <tfoot>
+            <tr><th>Total</th><td>${trainee.Total}</td></tr>
+            <tr><th>Percentage</th><td>${trainee.Percentage}%</td></tr>
+            <tr><th>Grade</th><td>${trainee.GRADE}</td></tr>
+            <tr><th>Result</th><td>${trainee.Result}</td></tr>
+          </tfoot>
+        </table>
+      </div>
 
-        <div class="action-buttons">
-          <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
-          <button class="btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
-        </div>`;
+      <div class="action-buttons">
+        <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Result</button>
+        <button class="btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+      </div>`;
 
-        div.innerHTML = out;
+        resultContainer.innerHTML = output;
       } catch (err) {
         console.error("Error fetching result:", err);
-        div.innerHTML = `<p style="text-align:center;color:red;">Error loading results, try again.</p>`;
+        resultContainer.innerHTML = `<p class="error-message">Error loading results. Please try again later.</p>`;
       }
     }
 
     function downloadPDF() {
-      const el = document.getElementById("resultCard");
-      if (!el) {
+      const element = document.getElementById("resultCard");
+      if (!element) {
         alert("Result not loaded.");
         return;
       }
-      html2pdf().from(el).set({
-        margin: 0.2,
-        filename: "Trainee_Result.pdf",
-        html2canvas: { scale: 1.8, backgroundColor: '#fff' },
-        jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
-      }).save();
+      const opt = {
+        margin: 0.5,
+        filename: `Trainee_Result_${new Date().toISOString().split('T')[0]}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, backgroundColor: '#fff' },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
     }
+
+    // Add Enter key support for search
+    document.getElementById("cnic").addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        checkResult();
+      }
+    });
   </script>
 </body>
-</html>
+                                        </html>
