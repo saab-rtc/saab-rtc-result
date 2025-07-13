@@ -52,39 +52,19 @@
     }
 
     .header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      padding: 30px;
+      padding: 20px;
       text-align: center;
       color: var(--white);
+      display: none;
     }
 
     .header img {
       height: 90px;
       margin-bottom: 12px;
-      object-fit: contain;
-    }
-
-    .header h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .header h2 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      opacity: 0.9;
     }
 
     .subtitle {
-      background: var(--accent);
-      color: var(--white);
-      margin: 20px;
-      padding: 10px;
-      text-align: center;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 6px;
+      display: none;
     }
 
     .search-container {
@@ -100,12 +80,6 @@
       border: 2px solid var(--primary);
       border-radius: 6px;
       background: var(--white);
-      transition: border-color 0.3s;
-    }
-
-    .search-container input:focus {
-      outline: none;
-      border-color: var(--accent);
     }
 
     .search-container button {
@@ -118,7 +92,6 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s;
     }
 
     .search-container button:hover {
@@ -131,47 +104,89 @@
     }
 
     .result-card {
-      background: var(--white);
-      color: #111827;
-      padding: 24px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .info-grid p {
-      font-size: 0.95rem;
-      line-height: 1.4;
-    }
-
-    table {
+      border: 2px solid #000;
+      padding: 20px;
+      margin: 0 auto;
       width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
+      max-width: 800px;
+      background: #fff;
+      color: #000;
+      font-size: 12pt;
+      text-align: center;
     }
 
-    th, td {
-      padding: 10px;
-      border: 1px solid #d1d5db;
+    .result-card .header-logo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .result-card .header-logo img {
+      height: 60px;
+    }
+
+    .result-card h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .result-card h2 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .result-card .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
       text-align: left;
     }
 
-    th {
-      background: #f3f4f6;
-      font-weight: 600;
-      color: #1f2937;
+    .result-card .info-grid p {
+      font-size: 0.9rem;
+      margin: 2px 0;
     }
 
-    tfoot tr {
-      background: #f9fafb;
+    .result-card table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+
+    .result-card th, .result-card td {
+      border: 1px solid #000;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .result-card th {
+      background: #e5e7eb;
       font-weight: 600;
+    }
+
+    .result-card .summary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .result-card .summary p {
+      font-size: 0.9rem;
+      margin: 2px 0;
+      border: 1px solid #000;
+      padding: 4px;
+    }
+
+    .result-card .signature {
+      text-align: right;
+      font-size: 0.8rem;
+      margin-top: 20px;
     }
 
     .action-buttons {
@@ -190,16 +205,11 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.3s;
     }
 
     .btn-print {
       background: var(--primary);
       color: var(--white);
-    }
-
-    .btn-print:hover {
-      background: #1e3a8a;
     }
 
     .btn-pdf {
@@ -208,34 +218,13 @@
       border: 2px solid var(--primary);
     }
 
-    .btn-pdf:hover {
-      background: var(--primary);
-      color: var(--white);
-    }
-
-    .error-message {
-      text-align: center;
-      color: var(--error);
-      font-weight: 500;
-      padding: 10px;
-    }
-
     .footer {
-      background: var(--bg);
-      padding: 15px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #9ca3af;
-    }
-
-    .footer .developer-credit {
-      color: var(--accent);
-      font-weight: 600;
+      display: none;
     }
 
     @media print {
       body {
-        background: var(--white) !important;
+        background: #fff !important;
         color: #000 !important;
         padding: 0 !important;
       }
@@ -246,44 +235,34 @@
 
       .result-container {
         display: block !important;
+        padding: 0 !important;
       }
 
       .result-card {
-        border: none;
-        padding: 0;
-        box-shadow: none;
-        font-size: 10pt;
+        border: 2px solid #000 !important;
+        padding: 20px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 800px !important;
+        box-shadow: none !important;
       }
 
-      table {
-        font-size: 10pt;
+      .result-card .header-logo img {
+        height: 60px !important;
       }
     }
 
     @media (max-width: 768px) {
       .container {
         margin: 10px;
-        padding-bottom: 10px;
       }
 
-      .header img {
-        height: 70px;
+      .result-card {
+        padding: 15px;
       }
 
-      .header h1 {
-        font-size: 1.5rem;
-      }
-
-      .header h2 {
-        font-size: 0.95rem;
-      }
-
-      .search-container input {
-        max-width: 100%;
-      }
-
-      .search-container button {
-        width: 100%;
+      .result-card .info-grid, .result-card .summary {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -292,8 +271,6 @@
   <div class="container">
     <div class="header">
       <img src="rtc-logo.jpeg.jpeg" alt="SAAB RTC Logo" />
-      <h1>SHAHEED ABDUL AZIZ BULLO</h1>
-      <h2>RECRUIT TRAINING CENTER HYDERABAD</h2>
     </div>
 
     <div class="subtitle">Final Result of LSC Batch 01/2025</div>
@@ -306,9 +283,7 @@
     <div class="result-container" id="resultContainer"></div>
 
     <div class="footer">
-      <div class="developer-credit">
-        System Developed by: Mohsin Ali Jamali (Exam Branch SAAB, RTC HYD)
-      </div>
+      <div class="developer-credit">System Developed by: Mohsin Ali Jamali (Exam Branch SAAB, RTC HYD)</div>
     </div>
   </div>
 
@@ -335,12 +310,12 @@
       resultContainer.style.display = "block";
 
       if (cleaned.length !== 13) {
-        resultContainer.innerHTML = `<p class="error-message">Please enter a valid 13-digit CNIC.</p>`;
+        resultContainer.innerHTML = `<p style="text-align:center;color:red;">Please enter a valid 13-digit CNIC.</p>`;
         cnicInput.focus();
         return;
       }
 
-      resultContainer.innerHTML = `<p class="error-message">Loading results...</p>`;
+      resultContainer.innerHTML = `<p style="text-align:center;">Loading results...</p>`;
       try {
         const response = await fetch(API, { headers: { 'Cache-Control': 'no-cache' } });
         if (!response.ok) throw new Error('Network response was not ok');
@@ -350,7 +325,7 @@
         );
 
         if (!trainee) {
-          resultContainer.innerHTML = `<p class="error-message">No record found for CNIC: ${formatCNIC(cnic)}</p>`;
+          resultContainer.innerHTML = `<p style="text-align:center;color:red;">No record found for CNIC: ${formatCNIC(cnic)}</p>`;
           return;
         }
 
@@ -372,41 +347,69 @@
           "Viva Voce"
         ];
 
-        let output = `<div id="resultCard" class="result-card">
-          <div class="info-grid">
-            <p><strong>Roll No:</strong> ${trainee["ROLL / SEAT NO"]}</p>
-            <p><strong>Rank & B.No:</strong> ${trainee["RANK & B.No"]}</p>
-            <p><strong>Name:</strong> ${trainee.NAME}</p>
-            <p><strong>Father's Name:</strong> ${trainee["FATHER'S NAME"]}</p>
-            <p><strong>CNIC:</strong> ${formatCNIC(cnic)}</p>
-            <p><strong>Arrival Dist/Unit:</strong> ${trainee["ARRIVAL DIST. /UNIT"]}</p>
+        let output = `<div class="result-card">
+          <div class="header-logo">
+            <img src="SAAB_RTC_Logo-removebg-preview.png" alt="Sindh Police Logo" />
+            <img src="SAAB_RTC_Logo-removebg-preview.png" alt="RTC Hyderabad Logo" style="transform: scaleX(-1);" />
           </div>
-
+          <h1>SHAHEED ABDUL AZIZ BULLO RECRUIT TRAINING CENTER HYDERABAD</h1>
+          <h2>MARKS CERTIFICATE</h2>
+          <h3>RESULT OF FINAL EXAMINATION OF LOWER SCHOOL COURSE BATCH (LSC/01/2025)</h3>
+          <h3>HELD FROM 16.06.2025 TO 25.06.2025</h3>
+          <div class="info-grid">
+            <p><strong>ROLL / SEAT NO :</strong> ${trainee["ROLL / SEAT NO"]}</p>
+            <p><strong>RANK & B.NO :</strong> ${trainee["RANK & B.No"]}</p>
+            <p><strong>NAME :</strong> ${trainee.NAME}</p>
+            <p><strong>FATHER'S NAME :</strong> ${trainee["FATHER'S NAME"]}</p>
+            <p><strong>CNIC NO :</strong> ${formatCNIC(cnic)}</p>
+            <p><strong>ARRIVAL DIST./UNIT :</strong> ${trainee["ARRIVAL DIST. /UNIT"]}</p>
+          </div>
           <table>
             <thead>
               <tr>
-                <th>Subject</th>
-                <th>Marks</th>
+                <th>SUBJECT</th>
+                <th>MAX. MARKS</th>
+                <th>OBTAINED MARKS</th>
+                <th>REMARKS</th>
               </tr>
             </thead>
             <tbody>`;
 
         subjects.forEach((subject) => {
           if (trainee[subject]) {
-            output += `<tr><td>${subject}</td><td>${trainee[subject]}</td></tr>`;
+            const maxMarks = 100; // Assuming 100 as max marks for each subject
+            const obtainedMarks = parseInt(trainee[subject]) || 0;
+            const remarks = obtainedMarks >= 50 ? "PASS" : "FAIL"; // Basic pass/fail logic
+            output += `<tr>
+              <td>${subject}</td>
+              <td>${maxMarks}</td>
+              <td>${obtainedMarks}</td>
+              <td>${remarks}</td>
+            </tr>`;
           }
         });
 
         output += `</tbody>
           <tfoot>
-            <tr><th>Total</th><td>${trainee.Total}</td></tr>
-            <tr><th>Percentage</th><td>${trainee.Percentage}%</td></tr>
-            <tr><th>Grade</th><td>${trainee.GRADE}</td></tr>
-            <tr><th>Result</th><td>${trainee.Result}</td></tr>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td>1500</td>
+              <td>${trainee.Total}</td>
+              <td></td>
+            </tr>
           </tfoot>
         </table>
+        <div class="summary">
+          <p><strong>Marks in Words:</strong> ONE THOUSAND TWO HUNDRED FIFTY SIX ONLY</p>
+          <p><strong>RESULT :</strong> ${trainee.Result}</p>
+          <p><strong>PERCENTAGE :</strong> ${trainee.Percentage}%</p>
+          <p><strong>GRADE :</strong> ${trainee.GRADE}</p>
+          <p><strong>DATE :</strong> ${new Date().toLocaleDateString('en-GB')}</p>
+        </div>
+        <div class="signature">
+          (ABRAR MUHAMMAD AWAN) SPS<br />DSP / PRINCIPAL<br />SAAB, RTC HYDERABAD
+        </div>
       </div>
-
       <div class="action-buttons">
         <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Result</button>
         <button class="btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
@@ -415,27 +418,26 @@
         resultContainer.innerHTML = output;
       } catch (err) {
         console.error("Error fetching result:", err);
-        resultContainer.innerHTML = `<p class="error-message">Error loading results. Please try again later.</p>`;
+        resultContainer.innerHTML = `<p style="text-align:center;color:red;">Error loading results. Please try again later.</p>`;
       }
     }
 
     function downloadPDF() {
-      const element = document.getElementById("resultCard");
+      const element = document.getElementById("resultContainer").querySelector(".result-card");
       if (!element) {
         alert("Result not loaded.");
         return;
       }
       const opt = {
         margin: 0.5,
-        filename: `Trainee_Result_${new Date().toISOString().split('T')[0]}.pdf`,
+        filename: `Marks_Certificate_${new Date().toISOString().split('T')[0]}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, backgroundColor: '#fff' },
+        html2pdf: { scale: 2, backgroundColor: '#fff' },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
     }
 
-    // Add Enter key support for search
     document.getElementById("cnic").addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
         checkResult();
@@ -443,4 +445,4 @@
     });
   </script>
 </body>
-                                        </html>
+</html>
