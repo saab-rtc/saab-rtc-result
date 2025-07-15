@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Result Portal for LSC Batch 01/2025, SAAB Recruit Training Center Hyderabad" />
+  <meta name="keywords" content="SAAB, RTC Hyderabad, LSC Batch, Result Portal" />
   <title>LSC Batch 01/2025 – SAAB, RTC Hyderabad Result Portal</title>
 
   <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
@@ -19,7 +21,8 @@
       --accent: #f59e0b;
       --white: #ffffff;
       --error: #ef4444;
-      --font: 'Inter', sans-serif;
+      --success: #10b981;
+      --font: 'Poppins', sans-serif;
     }
 
     * {
@@ -44,10 +47,11 @@
       max-width: 960px;
       width: 100%;
       margin: 20px auto;
-      background: var(--secondary);
+      background: rgba(30, 41, 59, 0.9);
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
       padding-bottom: 20px;
     }
 
@@ -62,6 +66,7 @@
       height: 90px;
       margin-bottom: 12px;
       object-fit: contain;
+      loading: lazy;
     }
 
     .header h1 {
@@ -100,12 +105,13 @@
       border: 2px solid var(--primary);
       border-radius: 6px;
       background: var(--white);
-      transition: border-color 0.3s;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
 
     .search-container input:focus {
       outline: none;
       border-color: var(--accent);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
     }
 
     .search-container button {
@@ -118,16 +124,47 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
     }
 
     .search-container button:hover {
       background: #1e3a8a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .loading-spinner {
+      display: none;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 10px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .result-container {
       padding: 20px;
       display: none;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-summary {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
     }
 
     .result-card {
@@ -155,6 +192,8 @@
       border-collapse: collapse;
       font-size: 0.9rem;
       margin-bottom: 20px;
+      overflow-x: auto;
+      display: block;
     }
 
     th, td {
@@ -200,6 +239,7 @@
 
     .btn-print:hover {
       background: #1e3a8a;
+      transform: translateY(-2px);
     }
 
     .btn-pdf {
@@ -211,6 +251,7 @@
     .btn-pdf:hover {
       background: var(--primary);
       color: var(--white);
+      transform: translateY(-2px);
     }
 
     .error-message {
@@ -218,6 +259,38 @@
       color: var(--error);
       font-weight: 500;
       padding: 10px;
+    }
+
+    .retry-btn {
+      background: var(--accent);
+      color: var(--white);
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .retry-btn:hover {
+      background: #d97706;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--white);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--primary);
+      color: var(--white);
     }
 
     .footer {
@@ -233,6 +306,22 @@
       font-weight: 600;
     }
 
+    /* Light Mode */
+    body.light-mode {
+      --bg: #f3f4f6;
+      --text: #1f2937;
+      --secondary: #ffffff;
+    }
+
+    body.light-mode .container {
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-mode .result-card {
+      background: #f9fafb;
+    }
+
     @media print {
       body {
         background: var(--white) !important;
@@ -240,7 +329,7 @@
         padding: 0 !important;
       }
 
-      .header, .subtitle, .search-container, .action-buttons, .footer {
+      .header, .subtitle, .search-container, .action-buttons, .footer, .theme-toggle {
         display: none !important;
       }
 
@@ -285,13 +374,23 @@
       .search-container button {
         width: 100%;
       }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
   <div class="container">
     <div class="header">
-      <img src="rtc-logo.jpeg.jpeg" alt="SAAB RTC Logo" />
+      <img src="rtc-logo.webp" alt="SAAB RTC Logo" />
       <h1>SHAHEED ABDUL AZIZ BULLO</h1>
       <h2>RECRUIT TRAINING CENTER HYDERABAD</h2>
     </div>
@@ -299,11 +398,26 @@
     <div class="subtitle">Final Result of LSC Batch 01/2025</div>
 
     <div class="search-container">
-      <input type="text" id="cnic" placeholder="Enter CNIC (e.g., 42201-1234567-9)" aria-label="Enter CNIC" />
-      <button onclick="checkResult()"><i class="fas fa-search"></i> Check Result</button>
+      <input
+        type="text"
+        id="cnic"
+        placeholder="Enter CNIC (e.g., 42201-1234567-9)"
+        aria-label="Enter CNIC number"
+        oninput="formatCNICInput(this)"
+        maxlength="15"
+      />
+      <button onclick="checkResult()" aria-label="Search Result">
+        <i class="fas fa-search"></i> Check Result
+      </button>
+      <div class="loading-spinner" id="loadingSpinner"></div>
     </div>
 
-    <div class="result-container" id="resultContainer"></div>
+    <div class="result-container" id="resultContainer">
+      <div class="result-summary" id="resultSummary" style="display: none;">
+        <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.5rem;"></i>
+        <p style="font-weight: 600; color: var(--text);">Result Status: <span id="statusText"></span></p>
+      </div>
+    </div>
 
     <div class="footer">
       <div class="developer-credit">
@@ -319,6 +433,13 @@
       return cnic.replace(/\D/g, '');
     }
 
+    function formatCNICInput(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 5) value = value.slice(0, 5) + '-' + value.slice(5);
+      if (value.length > 13) value = value.slice(0, 13) + '-' + value.slice(13);
+      input.value = value.slice(0, 15);
+    }
+
     function formatCNIC(cnic) {
       const cleaned = normalizeCNIC(cnic);
       return cleaned.length === 13
@@ -331,16 +452,20 @@
       const cnic = cnicInput.value.trim();
       const cleaned = normalizeCNIC(cnic);
       const resultContainer = document.getElementById("resultContainer");
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      const resultSummary = document.getElementById("resultSummary");
       resultContainer.innerHTML = "";
       resultContainer.style.display = "block";
+      loadingSpinner.style.display = "block";
+      resultSummary.style.display = "none";
 
       if (cleaned.length !== 13) {
         resultContainer.innerHTML = `<p class="error-message">Please enter a valid 13-digit CNIC.</p>`;
         cnicInput.focus();
+        loadingSpinner.style.display = "none";
         return;
       }
 
-      resultContainer.innerHTML = `<p class="error-message">Loading results...</p>`;
       try {
         const response = await fetch(API, { headers: { 'Cache-Control': 'no-cache' } });
         if (!response.ok) throw new Error('Network response was not ok');
@@ -349,10 +474,21 @@
           (record) => normalizeCNIC(record["CNIC"] || record["CNIC:"]) === cleaned
         );
 
+        loadingSpinner.style.display = "none";
+
         if (!trainee) {
           resultContainer.innerHTML = `<p class="error-message">No record found for CNIC: ${formatCNIC(cnic)}</p>`;
           return;
         }
+
+        resultSummary.style.display = "block";
+        const statusIcon = document.querySelector("#resultSummary i");
+        const statusText = document.getElementById("statusText");
+        statusText.textContent = trainee.Result;
+        statusIcon.className = trainee.Result === "Pass"
+          ? "fas fa-check-circle"
+          : "fas fa-times-circle";
+        statusIcon.style.color = trainee.Result === "Pass" ? "var(--success)" : "var(--error)";
 
         const subjects = [
           "Legal Knowledge",
@@ -408,14 +544,19 @@
       </div>
 
       <div class="action-buttons">
-        <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Result</button>
-        <button class="btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+        <button class="btn-print" onclick="window.print()" aria-label="Print Result">
+          <i class="fas fa-print"></i> Print Result
+        </button>
+        <button class="btn-pdf" onclick="downloadPDF()" aria-label="Download PDF">
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
       </div>`;
 
         resultContainer.innerHTML = output;
       } catch (err) {
         console.error("Error fetching result:", err);
-        resultContainer.innerHTML = `<p class="error-message">Error loading results. Please try again later.</p>`;
+        loadingSpinner.style.display = "none";
+        resultContainer.innerHTML = `<p class="error-message">Error loading results. <button class="retry-btn" onclick="checkResult()">Retry</button></p>`;
       }
     }
 
@@ -433,6 +574,14 @@
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+      const icon = document.querySelector(".theme-toggle i");
+      icon.className = document.body.classList.contains("light-mode")
+        ? "fas fa-sun"
+        : "fas fa-moon";
     }
 
     // Add Enter key support for search
