@@ -443,7 +443,7 @@
     function formatCNIC(cnic) {
       const cleaned = normalizeCNIC(cnic);
       return cleaned.length === 13
-        ? ${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(12)}
+        ? `${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(12)}`
         : cnic;
     }
 
@@ -454,13 +454,14 @@
       const resultContainer = document.getElementById("resultContainer");
       const loadingSpinner = document.getElementById("loadingSpinner");
       const resultSummary = document.getElementById("resultSummary");
+      
       resultContainer.innerHTML = "";
       resultContainer.style.display = "block";
       loadingSpinner.style.display = "block";
       resultSummary.style.display = "none";
 
       if (cleaned.length !== 13) {
-        resultContainer.innerHTML = <p class="error-message">Please enter a valid 13-digit CNIC.</p>;
+        resultContainer.innerHTML = `<p class="error-message">Please enter a valid 13-digit CNIC.</p>`;
         cnicInput.focus();
         loadingSpinner.style.display = "none";
         return;
@@ -470,25 +471,38 @@
         const response = await fetch(API, { headers: { 'Cache-Control': 'no-cache' } });
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        const trainee = data.find(
-          (record) => normalizeCNIC(record["CNIC"] || record["CNIC:"]) === cleaned
-        );
+        
+        // Debug: Log the first record to check structure
+        console.log("First record from API:", data[0]);
+        
+        const trainee = data.find(record => {
+          // Try different possible CNIC field names
+          const recordCNIC = record["CNIC"] || record["CNIC:"] || record["CNIC No"] || record["CNIC Number"];
+          return recordCNIC && normalizeCNIC(recordCNIC) === cleaned;
+        });
 
         loadingSpinner.style.display = "none";
 
         if (!trainee) {
-          resultContainer.innerHTML = <p class="error-message">No record found for CNIC: ${formatCNIC(cnic)}</p>;
+          resultContainer.innerHTML = `<p class="error-message">No record found for CNIC: ${formatCNIC(cnic)}</p>`;
           return;
         }
+
+        // Debug: Log the found trainee record
+        console.log("Found trainee record:", trainee);
 
         resultSummary.style.display = "block";
         const statusIcon = document.querySelector("#resultSummary i");
         const statusText = document.getElementById("statusText");
-        statusText.textContent = trainee.Result;
-        statusIcon.className = trainee.Result === "Pass"
-          ? "fas fa-check-circle"
-          : "fas fa-times-circle";
-        statusIcon.style.color = trainee.Result === "Pass" ? "var(--success)" : "var(--error)";
+        statusText.textContent = trainee.Result || trainee.RESULT || "Not Available";
+        
+        if ((trainee.Result || trainee.RESULT) === "Pass") {
+          statusIcon.className = "fas fa-check-circle";
+          statusIcon.style.color = "var(--success)";
+        } else {
+          statusIcon.className = "fas fa-times-circle";
+          statusIcon.style.color = "var(--error)";
+        }
 
         const subjects = [
           "Legal Knowledge",
@@ -510,12 +524,12 @@
 
         let output = `<div id="resultCard" class="result-card">
           <div class="info-grid">
-            <p><strong>Roll No:</strong> ${trainee["ROLL / SEAT NO"]}</p>
-            <p><strong>Rank & B.No:</strong> ${trainee["RANK & B.No"]}</p>
-            <p><strong>Name:</strong> ${trainee.NAME}</p>
-            <p><strong>Father's Name:</strong> ${trainee["FATHER'S NAME"]}</p>
+            <p><strong>Roll No:</strong> ${trainee["ROLL / SEAT NO"] || trainee["Roll No"] || "N/A"}</p>
+            <p><strong>Rank & B.No:</strong> ${trainee["RANK & B.No"] || trainee["Rank"] || "N/A"}</p>
+            <p><strong>Name:</strong> ${trainee.NAME || trainee.Name || "N/A"}</p>
+            <p><strong>Father's Name:</strong> ${trainee["FATHER'S NAME"] || trainee["Father Name"] || "N/A"}</p>
             <p><strong>CNIC:</strong> ${formatCNIC(cnic)}</p>
-            <p><strong>Arrival Dist/Unit:</strong> ${trainee["ARRIVAL DIST. /UNIT"]}</p>
+            <p><strong>Arrival Dist/Unit:</strong> ${trainee["ARRIVAL DIST. /UNIT"] || trainee["Unit"] || "N/A"}</p>
           </div>
 
           <table>
@@ -528,17 +542,16 @@
             <tbody>`;
 
         subjects.forEach((subject) => {
-          if (trainee[subject]) {
-            output += <tr><td>${subject}</td><td>${trainee[subject]}</td></tr>;
-          }
+          const marks = trainee[subject] || trainee[subject.toUpperCase()] || "N/A";
+          output += `<tr><td>${subject}</td><td>${marks}</td></tr>`;
         });
 
         output += `</tbody>
           <tfoot>
-            <tr><th>Total</th><td>${trainee.Total}</td></tr>
-            <tr><th>Percentage</th><td>${trainee.Percentage}%</td></tr>
-            <tr><th>Grade</th><td>${trainee.GRADE}</td></tr>
-            <tr><th>Result</th><td>${trainee.Result}</td></tr>
+            <tr><th>Total</th><td>${trainee.Total || trainee.TOTAL || "N/A"}</td></tr>
+            <tr><th>Percentage</th><td>${trainee.Percentage || trainee.PERCENTAGE || "N/A"}%</td></tr>
+            <tr><th>Grade</th><td>${trainee.GRADE || trainee.Grade || "N/A"}</td></tr>
+            <tr><th>Result</th><td>${trainee.Result || trainee.RESULT || "N/A"}</td></tr>
           </tfoot>
         </table>
       </div>
@@ -556,7 +569,7 @@
       } catch (err) {
         console.error("Error fetching result:", err);
         loadingSpinner.style.display = "none";
-        resultContainer.innerHTML = <p class="error-message">Error loading results. <button class="retry-btn" onclick="checkResult()">Retry</button></p>;
+        resultContainer.innerHTML = `<p class="error-message">Error loading results. <button class="retry-btn" onclick="checkResult()">Retry</button></p>`;
       }
     }
 
@@ -568,7 +581,7 @@
       }
       const opt = {
         margin: 0.5,
-        filename: Trainee_Result_${new Date().toISOString().split('T')[0]}.pdf,
+        filename: `Trainee_Result_${new Date().toISOString().split('T')[0]}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, backgroundColor: '#fff' },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
